@@ -1,0 +1,10 @@
+package com.addtocart.home;
+
+import java.util.ArrayList;
+
+public interface productDao {
+
+	
+	ArrayList<Product>getAllproduct(); 
+	Product getProduct(int pid);
+}

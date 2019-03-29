@@ -1,0 +1,39 @@
+package com.addtocart.home;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/Orderservlet")
+public class Orderservlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    
+    public Orderservlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		PrintWriter out=response.getWriter();
+			productDao pDao=new ProductDaoimpl();
+			ArrayList<Product>plist=pDao.getAllproduct();
+			out.println("<html><body>");
+			out.println("<form action='Addtocartservlet'method='post'>");
+			out.println("<select name='pid'>");
+			for(Product P:plist)
+			{
+				out.println("<option value="+P.getM_pno()+">"+P.getM_pname()+"</option>");
+			}
+			
+			out.println("</select>");
+		    out.println("<input type='submit' value='Addtocartservlet'>");
+	}
+
+}

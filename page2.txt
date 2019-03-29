@@ -1,0 +1,59 @@
+package com.addtocart.home;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+
+@WebServlet("/Addtocartservlet")
+public class Addtocartservlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    
+    public Addtocartservlet() {
+        super();
+        
+    }
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		PrintWriter out=response.getWriter();
+		productDao pDao=new ProductDaoimpl();
+		int m_pname=Integer.parseInt(request.getParameter("pid"));
+		HttpSession session=request.getSession();
+		 ArrayList<Product>plist= (ArrayList<Product>)session.getAttribute("productlist");
+		
+		session.setAttribute("product", m_pname);
+		//ArrayList<String>plist=new ArrayList();
+		if(plist==null)
+		{
+			plist=new ArrayList<Product>();
+		}
+		Product product =pDao.getProduct(m_pname);
+		   plist.add(product);
+		
+		session.setAttribute("productlist", plist);
+		
+		out.println("<html><body>");
+		out.println("you have order<br>");
+		ArrayList<Product> clist=(ArrayList<Product>)session.getAttribute("productlist");
+		for(Product p:clist)
+		{
+			out.println(p.getM_pno()+" "+p.getM_pname()+" "+p.getM_price());
+		}
+		
+		//out.println(m_pname);
+		out.println("<br><a href='order.html'>Back</a>");
+		out.println("<a href='Confirmorder'>logout</a>");
+		out.println("</html></body>");
+		
+	}
+
+}
